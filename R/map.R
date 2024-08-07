@@ -12,10 +12,9 @@ map <- S7::new_class("map",
           mapping = ggplot2::aes(
             x = .data[["x"]],
             y = .data[["y"]],
-            fill = .data[["type"]]
           )
         ) +
-          ggplot2::geom_tile()
+          ggplot2::geom_tile(mapping = ggplot2::aes(fill = .data[["type"]]))
       }
     )
   ),
