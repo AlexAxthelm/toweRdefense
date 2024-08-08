@@ -1,3 +1,4 @@
+#' @include map.R
 map_01 <- map(
   cells = data.frame(
     x = rep(1L:10L, 10L),

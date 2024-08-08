@@ -17,3 +17,10 @@ RoxygenNote: 7.3.2
 Imports: 
     logger,
     S7
+Collate: 
+    'map.R'
+    'map_01.R'
+    'mob.R'
+    'game.R'
+    'mob_basic.R'
+    'toweRdefense-package.R'
