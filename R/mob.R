@@ -1,3 +1,5 @@
+#' @include generics.R
+
 mob <- S7::new_class("mob",
   properties = list(
     id = S7::new_property(
@@ -12,27 +14,10 @@ mob <- S7::new_class("mob",
     max_health = S7::class_numeric,
     reward = S7::class_numeric,
     waypoint = S7::class_numeric,
-    waypoints = S7::class_list,
-    plot = S7::new_property(
-      getter = function(self) {
-        log_debug("Creating map plot.")
-        invisible(
-        ggplot2::geom_point(
-          data = data.frame(
-            x = self@position[[1L]],
-            y = self@position[[2L]],
-            shape = self@type
-            ),
-          mapping = ggplot2::aes(x = x, y = y, shape = shape),
-          inherit.aes = FALSE
-        )
-        )
-      }
-    )
+    waypoints = S7::class_list
   )
 )
 
-update <- S7::new_generic("update", "x")
 S7::method(update, mob) <- function(x) {
   log_debug("Updating mob: {x@id}.")
   if (all(x@position == x@waypoint)) {
@@ -41,12 +26,26 @@ S7::method(update, mob) <- function(x) {
   }
   x@position <- calculate_new_position(x@position, x@waypoint, x@speed)
   log_trace("Position: {x@position}.")
-
   invisible(x)
 }
 
+S7::method(render, mob) <- function(x) {
+  log_trace("Rendering mob: {x@id}.")
+  invisible(
+    ggplot2::geom_point(
+      data = data.frame(
+        x = x@position[[1L]],
+        y = x@position[[2L]],
+        shape = x@type
+      ),
+      mapping = ggplot2::aes(x = x, y = y, shape = shape),
+      inherit.aes = FALSE
+    )
+  )
+}
+
 calculate_new_position <- function(position, destination, speed) {
-  distance <- sqrt(sum((destination - position) ^ 2))
+  distance <- sqrt(sum((destination - position) ^ 2L))
   if (distance < speed) {
     return(destination)
   }

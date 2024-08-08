@@ -1,6 +1,7 @@
+#' @include generics.R
 #' @include map.R
-#' @include mob.R
 #' @include map_01.R
+#' @include mob.R
 game <- S7::new_class("game",
   properties = list(
     id = S7::new_property(
@@ -42,8 +43,9 @@ S7::method(add_mob, game) <- function(x, mob) {
   invisible(x)
 }
 
-render <- S7::new_generic("render", "x")
 S7::method(render, game) <- function(x) {
   log_debug("Rendering game: {x@id}.")
-  x@map@plot
+  map_layer <- render(x@map)
+  mob_layer <- lapply(x@mobs, render)
+  map_layer + mob_layer
 }

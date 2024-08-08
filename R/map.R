@@ -1,3 +1,4 @@
+#' @include generics.R
 map <- S7::new_class("map",
   properties = list(
     width = S7::class_integer,
@@ -6,15 +7,6 @@ map <- S7::new_class("map",
     waypoints = S7::class_list,
     plot = S7::new_property(
       getter = function(self) {
-        log_debug("Creating map plot.")
-        ggplot2::ggplot(
-          data = self@cells,
-          mapping = ggplot2::aes(
-            x = .data[["x"]],
-            y = .data[["y"]],
-          )
-        ) +
-          ggplot2::geom_tile(mapping = ggplot2::aes(fill = .data[["type"]]))
       }
     )
   ),
@@ -41,3 +33,15 @@ map <- S7::new_class("map",
     )
   }
 )
+
+S7::method(render, map) <- function(x) {
+  log_trace("Creating map plot.")
+  ggplot2::ggplot(
+    data = x@cells,
+    mapping = ggplot2::aes(
+      x = .data[["x"]],
+      y = .data[["y"]],
+    )
+    ) +
+  ggplot2::geom_tile(mapping = ggplot2::aes(fill = .data[["type"]]))
+}

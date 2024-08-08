@@ -18,9 +18,10 @@ Imports:
     logger,
     S7
 Collate: 
+    'generics.R'
+    'mob.R'
     'map.R'
     'map_01.R'
-    'mob.R'
     'game.R'
     'mob_basic.R'
     'toweRdefense-package.R'

@@ -5,11 +5,14 @@
 ```R
 
 devtools::load_all()
-mb <- mob_basic(map_01@waypoints[[1L]], 3L)
+foo <- game()
 
 for (i in 1:1000) {
-  mb <- update(mb)
-  print(map_01@plot + mb@plot)
+  if (i %% 30 == 0L) {
+    foo <- add_mob(foo, mob_basic)
+  }
+  foo <- update(foo)
+  print(render(foo))
 }
 
 ```
