@@ -35,12 +35,12 @@ mob <- S7::new_class("mob",
 update <- S7::new_generic("update", "x")
 S7::method(update, mob) <- function(x) {
   log_debug("Updating mob: {x@id}.")
-  x@position <- calculate_new_position(x@position, x@waypoint, x@speed)
-  log_trace("Position: {x@position}.")
   if (all(x@position == x@waypoint)) {
     x@waypoint <- get_next_waypoint(x@position, x@waypoints)
     log_trace("Next waypoint: {x@waypoint}.")
   }
+  x@position <- calculate_new_position(x@position, x@waypoint, x@speed)
+  log_trace("Position: {x@position}.")
 
   invisible(x)
 }
