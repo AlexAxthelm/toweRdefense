@@ -1,6 +1,9 @@
 mob <- S7::new_class("mob",
   properties = list(
-    id = S7::class_character,
+    id = S7::new_property(
+      S7::class_character,
+      default = uuid::UUIDgenerate()
+    ),
     position = S7::class_numeric,
     speed = S7::class_numeric,
     type = S7::class_character,
@@ -9,19 +12,58 @@ mob <- S7::new_class("mob",
     max_health = S7::class_numeric,
     reward = S7::class_numeric,
     waypoint = S7::class_numeric,
+    waypoints = S7::class_list,
     plot = S7::new_property(
       getter = function(self) {
         log_debug("Creating map plot.")
+        invisible(
         ggplot2::geom_point(
           data = data.frame(
-            x = self@position[[1]],
-            y = self@position[[2]],
+            x = self@position[[1L]],
+            y = self@position[[2L]],
             shape = self@type
             ),
           mapping = ggplot2::aes(x = x, y = y, shape = shape),
           inherit.aes = FALSE
         )
+        )
       }
     )
   )
 )
+
+update <- S7::new_generic("update", "x")
+S7::method(update, mob) <- function(x) {
+  log_debug("Updating mob: {x@id}.")
+  x@position <- calculate_new_position(x@position, x@waypoint, x@speed)
+  log_trace("Position: {x@position}.")
+  if (all(x@position == x@waypoint)) {
+    x@waypoint <- get_next_waypoint(x@position, x@waypoints)
+    log_trace("Next waypoint: {x@waypoint}.")
+  }
+
+  invisible(x)
+}
+
+calculate_new_position <- function(position, destination, speed) {
+  distance <- sqrt(sum((destination - position) ^ 2))
+  if (distance < speed) {
+    return(destination)
+  }
+  direction <- (destination - position) / distance
+  return(position + (direction * speed))
+}
+
+get_next_waypoint <- function(position, waypoints) {
+  log_trace("Reached waypoint at {position}.")
+  wp_idx <- which(
+    vapply(
+      X = waypoints,
+      FUN = function(wp) {
+        all(position == wp)
+      },
+      FUN.VALUE = logical(1)
+    )
+  )
+  return(waypoints[[wp_idx + 1L]])
+}

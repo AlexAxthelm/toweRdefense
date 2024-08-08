@@ -1,6 +1,10 @@
 #' @keywords internal
 "_PACKAGE"
 
+.onLoad <- function(lib, pkg) {
+  S7::methods_register()
+}
+
 # Supress lintr warnings about functions re-exported from logger
 utils::globalVariables(
   c(
@@ -11,6 +15,9 @@ utils::globalVariables(
     "log_warn"
   )
 )
+# enable usage of <S7_object>@name in package code
+#' @rawNamespace if (getRversion() < "4.3.0") importFrom("S7", "@")
+NULL
 
 ## usethis namespace: start
 #' @importFrom logger log_debug

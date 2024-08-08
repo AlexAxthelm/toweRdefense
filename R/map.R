@@ -24,7 +24,6 @@ map <- S7::new_class("map",
     target,
     waypoints
   ) {
-    log_trace("Casting length and height to integer.")
     width <- as.integer(max(cells[["x"]]))
     height <- as.integer(max(cells[["y"]]))
     waypoints <- c(
