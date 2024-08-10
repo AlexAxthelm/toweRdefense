@@ -5,6 +5,7 @@ mob_basic <- S7::new_class("mob_basic",
     max_health <- 10L ^ (level / 10L)
     S7::new_object(
       mob(),
+      id = uuid::UUIDgenerate(),
       position = waypoints[[1]],
       speed = 1L / 15L,
       type = "basic",

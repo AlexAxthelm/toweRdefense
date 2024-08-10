@@ -2,10 +2,7 @@
 
 mob <- S7::new_class("mob",
   properties = list(
-    id = S7::new_property(
-      S7::class_character,
-      default = uuid::UUIDgenerate()
-    ),
+    id = S7::class_character,
     position = S7::class_numeric,
     speed = S7::class_numeric,
     type = S7::class_character,
@@ -25,7 +22,7 @@ S7::method(update, mob) <- function(x) {
     log_trace("Next waypoint: {x@waypoint}.")
   }
   x@position <- calculate_new_position(x@position, x@waypoint, x@speed)
-  log_trace("Position: {x@position}.")
+  log_trace("Position: {x@position[[1L]]}, {x@position[[2L]]}.")
   invisible(x)
 }
 
