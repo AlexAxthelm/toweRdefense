@@ -14,9 +14,18 @@ game <- S7::new_class("game",
       ),
     mobs = S7::class_list,
     towers = S7::class_list,
-    health = S7::class_integer,
-    max_health = S7::class_integer,
-    gold = S7::class_integer,
+    health = S7::new_property(
+      S7::class_integer,
+      default = 30L
+    ),
+    max_health = S7::new_property(
+      S7::class_integer,
+      default = 30L
+    ),
+    coins = S7::new_property(
+      S7::class_integer,
+      default = 60L
+    ),
     level = S7::new_property(
       S7::class_integer,
       default = 1L
