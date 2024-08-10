@@ -8,6 +8,7 @@ map_01 <- map(
   ) |>
     dplyr::mutate(
       type = dplyr::case_when(
+        x == 10L & y == 7L ~ "base",
         y %in% c(3L, 5L, 7L) ~ "road",
         y == 4L & x == 10L ~ "road",
         y == 6L & x == 1L ~ "road",
