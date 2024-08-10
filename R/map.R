@@ -5,6 +5,7 @@ map <- S7::new_class("map",
     height = S7::class_integer,
     cells = S7::class_data.frame,
     waypoints = S7::class_list,
+    base = S7::class_integer,
     plot = S7::new_property(
       getter = function(self) {
       }
@@ -12,24 +13,18 @@ map <- S7::new_class("map",
   ),
   constructor = function(
     cells,
-    emitter,
-    target,
     waypoints
   ) {
     width <- as.integer(max(cells[["x"]]))
     height <- as.integer(max(cells[["y"]]))
-    waypoints <- c(
-      list(emitter),
-      waypoints,
-      list(target)
-    )
     logger::log_trace("Creating S7 map object.")
     S7::new_object(
       S7::S7_object(),
       width = width,
       height = height,
       cells = cells,
-      waypoints = waypoints
+      waypoints = waypoints,
+      base = waypoints[[length(waypoints)]]
     )
   }
 )

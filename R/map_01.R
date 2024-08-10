@@ -14,12 +14,12 @@ map_01 <- map(
         TRUE ~ "open"
       )
     ),
-  emitter = c(1L, 3L),
-  target = c(10L, 7L),
   waypoints = list(
+    c(1L, 3L),
     c(10L, 3L),
     c(10L, 5L),
     c(1L, 5L),
-    c(1L, 7L)
+    c(1L, 7L),
+    c(10L, 7L)
   )
 )
