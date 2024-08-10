@@ -6,7 +6,7 @@ mob_basic <- S7::new_class("mob_basic",
     S7::new_object(
       mob(),
       position = waypoints[[1]],
-      speed = 1L / 30L,
+      speed = 1L / 15L,
       type = "basic",
       level = level,
       health = max_health,
