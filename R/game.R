@@ -47,7 +47,7 @@ S7::method(add_mob, game) <- function(x, mob) {
     level = x@level,
     waypoints = x@map@waypoints
   )
-  x@mobs <- append(x@mobs, new_mob)
+  x@mobs[[new_mob@id]] <- new_mob
   log_trace("Added mob {new_mob@id} to game.")
   invisible(x)
 }
