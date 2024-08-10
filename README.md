@@ -7,7 +7,6 @@
 devtools::load_all()
 gov <- governor::gov_init(1/24); 
 foo <- game()
-
 skip <- FALSE
 for (i in 1:1000) {
   log_info(i)
