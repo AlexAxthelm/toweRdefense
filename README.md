@@ -8,10 +8,8 @@ devtools::load_all()
 gov <- governor::gov_init(1/24); 
 foo <- game()
 skip <- FALSE
-for (i in 1:1000) {
-  log_info("tick: {i}")
-  # if (i %% 30 == 1L) {
-  if (i == 1L) {
+while (foo@health > 0L) {
+  if (foo@tick %% 30 == 1L) {
     foo <- add_mob(foo, mob_basic)
   }
   foo <- update(foo)

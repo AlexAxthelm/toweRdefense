@@ -11,7 +11,7 @@ game <- S7::new_class("game",
     map = S7::new_property(
       map,
       default = map_01
-      ),
+    ),
     mobs = S7::class_list,
     towers = S7::class_list,
     health = S7::new_property(
@@ -47,7 +47,7 @@ S7::method(update, game) <- function(x) {
     if (all(mob@position == x@map@base)) {
       log_info("Mob {mob@id} reached base.")
       x@health <- x@health - mob@damage
-      log_debug("Health: {x@health} (-{mob@damage}.")
+      log_debug("Health: {x@health} (-{mob@damage}).")
       x@mobs[[mob@id]] <- NULL
     } else if (mob@health <= 0L) {
       log_info("Mob {mob@id} died.")
@@ -76,7 +76,7 @@ S7::method(render, game) <- function(x) {
   log_debug("Rendering game: {x@id}.")
   map_layer <- render(x@map)
   mob_layer <- lapply(x@mobs, render)
-  map_layer +
+  plot <- map_layer +
     mob_layer +
     ggplot2::labs(
       caption = paste(
@@ -86,4 +86,20 @@ S7::method(render, game) <- function(x) {
         "Tick: ", x@tick
       )
     )
+    if (x@health <= 0L) {
+      plot <- plot +
+        ggplot2::geom_label(
+          data = data.frame(
+            x = x@map@width / 2L,
+            y = x@map@height / 2L
+          ),
+          mapping = ggplot2::aes(
+            x = .data[["x"]],
+            y = .data[["y"]],
+            label = "Game Over!"
+          ),
+          inherit.aes = FALSE
+        )
+    }
+    return(plot)
 }
