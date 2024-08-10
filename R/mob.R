@@ -11,7 +11,11 @@ mob <- S7::new_class("mob",
     max_health = S7::class_numeric,
     reward = S7::class_numeric,
     waypoint = S7::class_numeric,
-    waypoints = S7::class_list
+    waypoints = S7::class_list,
+    damage = S7::new_property(
+      S7::class_numeric,
+      default = 1L
+    )
   )
 )
 
@@ -61,5 +65,6 @@ get_next_waypoint <- function(position, waypoints) {
       FUN.VALUE = logical(1)
     )
   )
-  return(waypoints[[wp_idx + 1L]])
+  next_wp_idx <- min(wp_idx + 1L, length(waypoints))
+  return(waypoints[[next_wp_idx]])
 }

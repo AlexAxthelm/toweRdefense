@@ -29,14 +29,34 @@ game <- S7::new_class("game",
     level = S7::new_property(
       S7::class_integer,
       default = 1L
+    ),
+    tick = S7::new_property(
+      S7::class_integer,
+      default = 1L
     )
   )
 )
 
 S7::method(update, game) <- function(x) {
   log_debug("Updating game: {x@id}.")
+  x@tick <- x@tick + 1L
+  log_trace("tick: {x@tick}.")
   log_trace("Updating mobs.")
   x@mobs <- lapply(x@mobs, update)
+  for (mob in x@mobs) {
+    if (all(mob@position == x@map@base)) {
+      log_info("Mob {mob@id} reached base.")
+      x@health <- x@health - mob@damage
+      log_debug("Health: {x@health} (-{mob@damage}.")
+      x@mobs[[mob@id]] <- NULL
+    } else if (mob@health <= 0L) {
+      log_info("Mob {mob@id} died.")
+      x@coins <- x@coins + mob@reward
+      log_debug("Coins: {x@coins} (+{mob@reward}).")
+      x@mobs[[mob@id]] <- NULL
+    }
+  }
+
   invisible(x)
 }
 
@@ -56,5 +76,14 @@ S7::method(render, game) <- function(x) {
   log_debug("Rendering game: {x@id}.")
   map_layer <- render(x@map)
   mob_layer <- lapply(x@mobs, render)
-  map_layer + mob_layer
+  map_layer +
+    mob_layer +
+    ggplot2::labs(
+      caption = paste(
+        "Health: ", x@health,
+        "Coins: ", x@coins,
+        "Level: ", x@level,
+        "Tick: ", x@tick
+      )
+    )
 }

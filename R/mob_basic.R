@@ -14,7 +14,8 @@ mob_basic <- S7::new_class("mob_basic",
       max_health = max_health,
       reward = max_health,
       waypoint = waypoints[[1]],
-      waypoints = waypoints
+      waypoints = waypoints,
+      damage = 1L
     )
   }
 )
