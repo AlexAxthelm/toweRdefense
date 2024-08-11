@@ -18,5 +18,6 @@ while (foo@health > 0L) {
   }
   skip  <- governor::gov_wait(gov)
 }
+render(foo)
 
 ```

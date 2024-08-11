@@ -51,7 +51,7 @@ calculate_new_position <- function(position, destination, speed) {
     return(destination)
   }
   direction <- (destination - position) / distance
-  return(position + (direction * speed))
+  return(round(position + (direction * speed), digits = 2))
 }
 
 get_next_waypoint <- function(position, waypoints) {
